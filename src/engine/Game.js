@@ -1,7 +1,10 @@
 import { Application } from 'pixi.js';
+import { InputManager } from './InputManager';
 
 export class Game {
 	app = null;
+
+	inputManager = new InputManager();
 
 	async init() {
 		this.app = new Application();
@@ -17,6 +20,9 @@ export class Game {
 
 	start() {
 		console.log(this.app, 'this app');
-		this.app && this.app.ticker.add(() => {});
+		this.app &&
+			this.app.ticker.add(() => {
+				this.inputManager.update();
+			});
 	}
 }
