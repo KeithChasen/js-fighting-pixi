@@ -1,19 +1,8 @@
-import {
-	Application,
-	Graphics,
-	Text,
-	TextStyle,
-	Assets,
-	Sprite,
-} from 'pixi.js';
-(async () => {
-	const app = new Application();
+import { Game } from './engine/Game';
 
-	await app.init({
-		resizeTo: window,
+window.onload = () => {
+	const game = new Game();
+	game.init().then(() => {
+		game.start();
 	});
-
-	app.canvas.style.position = 'absolute';
-
-	document.body.appendChild(app.canvas);
-})();
+};
