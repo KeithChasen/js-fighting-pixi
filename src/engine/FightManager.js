@@ -11,5 +11,7 @@ export class FightManager {
 		};
 	}
 
-	update() {}
+	update(input) {
+		this.fighters.player.update(input);
+	}
 }

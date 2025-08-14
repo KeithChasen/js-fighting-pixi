@@ -2,11 +2,10 @@ import { Application } from 'pixi.js';
 import { InputManager } from './InputManager';
 import { Fighter } from './Fighter';
 import { FightManager } from './FightManager';
+import { Player } from './Player';
 
 export class Game {
 	app = null;
-
-	// fighter = null;
 
 	inputManager = new InputManager();
 	fightManager = null;
@@ -20,7 +19,7 @@ export class Game {
 
 		this.app.canvas.style.position = 'absolute';
 
-		const player = new Fighter(100, 200);
+		const player = new Player(100, 200);
 		const enemy = new Fighter(400, 200);
 
 		this.app.stage.addChild(player);
@@ -35,7 +34,7 @@ export class Game {
 		this.app &&
 			this.app.ticker.add(() => {
 				this.inputManager.update();
-				this.fightManager.update();
+				this.fightManager.update(this.inputManager.state);
 			});
 	}
 }

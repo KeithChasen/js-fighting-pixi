@@ -16,7 +16,7 @@ export class InputManager {
 		if (e.code === 'ArrowLeft') this.state.left = pressed;
 		if (e.code === 'ArrowRight') this.state.right = pressed;
 		if (e.code === 'ArrowDown') this.state.down = pressed;
-		if (e.code === 'ArrowUp') this.state.top = pressed;
+		if (e.code === 'ArrowUp') this.state.up = pressed;
 		if (e.code === 'KeyD') this.state.punch = pressed;
 	}
 
