@@ -1,8 +1,8 @@
 import { Application } from 'pixi.js';
 import { InputManager } from './InputManager';
-import { Fighter } from './Fighter';
 import { FightManager } from './FightManager';
 import { Player } from './Player';
+import { AIEnemy } from './AIEnemy';
 
 export class Game {
 	app = null;
@@ -19,8 +19,8 @@ export class Game {
 
 		this.app.canvas.style.position = 'absolute';
 
-		const player = new Player(100, 200);
-		const enemy = new Fighter(400, 200);
+		const player = new Player(100, 200, 100, 20, 'Player');
+		const enemy = new AIEnemy(400, 200, 400, 20, 'Enemy');
 
 		this.app.stage.addChild(player);
 		this.app.stage.addChild(enemy);
