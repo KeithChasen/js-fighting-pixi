@@ -22,5 +22,6 @@ export class InputManager {
 
 	update() {
 		// console.table(this.state);
+		//process collected events (combos??) and dispatch them maybe async
 	}
 }

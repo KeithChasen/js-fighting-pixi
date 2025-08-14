@@ -1,13 +1,15 @@
 import { Application } from 'pixi.js';
 import { InputManager } from './InputManager';
 import { Fighter } from './Fighter';
+import { FightManager } from './FightManager';
 
 export class Game {
 	app = null;
 
-	fighter = null;
+	// fighter = null;
 
 	inputManager = new InputManager();
+	fightManager = null;
 
 	async init() {
 		this.app = new Application();
@@ -18,9 +20,13 @@ export class Game {
 
 		this.app.canvas.style.position = 'absolute';
 
-		this.fighter = new Fighter();
+		const player = new Fighter(100, 200);
+		const enemy = new Fighter(400, 200);
 
-		this.app.stage.addChild(this.fighter);
+		this.app.stage.addChild(player);
+		this.app.stage.addChild(enemy);
+
+		this.fightManager = new FightManager(player, enemy);
 
 		document.body.appendChild(this.app.canvas);
 	}
@@ -29,7 +35,7 @@ export class Game {
 		this.app &&
 			this.app.ticker.add(() => {
 				this.inputManager.update();
-				this.fighter.update();
+				this.fightManager.update();
 			});
 	}
 }
