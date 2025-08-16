@@ -1,9 +1,17 @@
-import { Container, Sprite, Texture, Text, TextStyle } from 'pixi.js';
+import {
+	Assets,
+	Container,
+	Sprite,
+	Spritesheet,
+	Texture,
+	AnimatedSprite,
+} from 'pixi.js';
 export class Fighter extends Container {
 	id = null;
 	health = 100;
 	name = '';
 	// sprite = null;
+	currentAnimation = null;
 
 	constructor(x, y, name) {
 		super();
@@ -20,21 +28,37 @@ export class Fighter extends Container {
 		this.position.set(x, y);
 
 		this.addChild(sprite);
+	}
 
-		const style = new TextStyle({
-			fontSize: 40,
-			fontWeight: 'bold',
-			fill: 0xffffff,
-		});
+	async load(sprite) {
+		const frames = {};
+		for (let i = 0; i < 6; i++) {
+			frames[`idleLeft${i + 1}`] = {
+				frame: { x: 32 * (i + 1), y: 32, w: 32, h: 32 },
+			};
+		}
 
-		const text = new Text({
-			text: `${name}: ${this.health}`,
-			style,
-		});
+		const atlasData = {
+			frames,
+			meta: {
+				image: `/images/${sprite}-40.png`,
+				size: { w: 256, h: 1280 },
+			},
+			animations: {
+				idleLeft: Object.keys(frames),
+			},
+		};
 
-		text.position.set(0, -100);
+		const texture = await Assets.load(atlasData.meta.image);
+		const spritesheet = new Spritesheet(texture, atlasData);
+		await spritesheet.parse();
 
-		this.addChild(text);
+		const animatedSprite = new AnimatedSprite(spritesheet.animations.idleLeft);
+
+		this.addChild(animatedSprite);
+
+		animatedSprite.play();
+		animatedSprite.animationSpeed = 0.13;
 	}
 
 	update() {
