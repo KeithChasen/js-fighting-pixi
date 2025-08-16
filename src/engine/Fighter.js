@@ -50,10 +50,14 @@ export class Fighter extends Container {
 		};
 
 		const texture = await Assets.load(atlasData.meta.image);
+
+		texture.baseTexture.scaleMode = 'nearest';
+
 		const spritesheet = new Spritesheet(texture, atlasData);
 		await spritesheet.parse();
 
 		const animatedSprite = new AnimatedSprite(spritesheet.animations.idleLeft);
+		animatedSprite.scale.set(5);
 
 		this.addChild(animatedSprite);
 
