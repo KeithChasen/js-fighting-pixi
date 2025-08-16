@@ -5,7 +5,7 @@ export class Fighter extends Container {
 	name = '';
 	// sprite = null;
 
-	constructor(x, y, tx, ty, name) {
+	constructor(x, y, name) {
 		super();
 
 		this.name = name;

@@ -3,6 +3,7 @@ import { InputManager } from './InputManager';
 import { FightManager } from './FightManager';
 import { Player } from './Player';
 import { AIEnemy } from './AIEnemy';
+import { UIManager } from './UIManager';
 
 export class Game {
 	app = null;
@@ -19,13 +20,17 @@ export class Game {
 
 		this.app.canvas.style.position = 'absolute';
 
-		const player = new Player(100, 200, 100, 20, 'Player');
-		const enemy = new AIEnemy(400, 200, 400, 20, 'Enemy');
+		const player = new Player(100, 200, 'Player');
+		const enemy = new AIEnemy(400, 200, 'Enemy');
 
 		this.app.stage.addChild(player);
 		this.app.stage.addChild(enemy);
 
 		this.fightManager = new FightManager(player, enemy);
+
+		// UI
+		this.uiManager = new UIManager(player, enemy);
+		this.app.stage.addChild(this.uiManager);
 
 		document.body.appendChild(this.app.canvas);
 	}
