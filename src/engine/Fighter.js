@@ -45,6 +45,18 @@ export class Fighter extends Container {
 			};
 		}
 
+		for (let i = 0; i < 5; i++) {
+			frames[`punchLeft${i + 1}`] = {
+				frame: { x: 32 * (i + 1), y: 64, w: 32, h: 32 },
+			};
+		}
+
+		for (let i = 0; i < 4; i++) {
+			frames[`kickLeft${i + 1}`] = {
+				frame: { x: 32 * (i + 1), y: 96, w: 32, h: 32 },
+			};
+		}
+
 		const atlasData = {
 			frames,
 			meta: {
@@ -54,24 +66,31 @@ export class Fighter extends Container {
 			animations: {
 				idleLeft: Object.keys(frames).filter(key => key.includes('idleLeft')),
 				walkLeft: Object.keys(frames).filter(key => key.includes('walkLeft')),
+				punchLeft: Object.keys(frames).filter(key => key.includes('punchLeft')),
+				kickLeft: Object.keys(frames).filter(key => key.includes('kickLeft')),
 			},
 		};
 
 		const texture = await Assets.load(atlasData.meta.image);
 
-		texture.baseTexture.scaleMode = 'nearest';
+		texture.source.scaleMode = 'nearest';
 
 		const spritesheet = new Spritesheet(texture, atlasData);
 		await spritesheet.parse();
 
-		// this.animations = spritesheet.animations;
-
 		for (const key in spritesheet.animations) {
 			const anim = new AnimatedSprite(spritesheet.animations[key]);
 			anim.scale.set(5);
-			anim.animationSpeed = 0.13;
+			anim.animationSpeed =
+				key === 'punchLeft' || key === 'kickLeft' ? 0.3 : 0.13;
 			anim.visible = false;
-			anim.loop = true;
+
+			if (key === 'punchLeft' || key === 'kickLeft') {
+				anim.loop = false; // do not loop animation if it's a kick or punch
+			} else {
+				anim.loop = true;
+			}
+
 			this.animations[key] = anim;
 			this.addChild(anim);
 		}
@@ -92,10 +111,6 @@ export class Fighter extends Container {
 			this.currentAnimation.visible = true;
 			this.currentAnimation.gotoAndPlay(0);
 		}
-	}
-
-	update() {
-		// console.log(this.sprite);
 	}
 
 	onHit(damage) {

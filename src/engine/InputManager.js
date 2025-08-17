@@ -4,7 +4,8 @@ export class InputManager {
 		down: false,
 		left: false,
 		right: false,
-		punch: false,
+		s: false,
+		d: false,
 	};
 
 	constructor() {
@@ -17,7 +18,8 @@ export class InputManager {
 		if (e.code === 'ArrowRight') this.state.right = pressed;
 		if (e.code === 'ArrowDown') this.state.down = pressed;
 		if (e.code === 'ArrowUp') this.state.up = pressed;
-		if (e.code === 'KeyD') this.state.punch = pressed;
+		if (e.code === 'KeyS') this.state.s = pressed;
+		if (e.code === 'KeyD') this.state.d = pressed;
 	}
 
 	update() {
