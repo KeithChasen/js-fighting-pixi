@@ -10,8 +10,9 @@ export class Fighter extends Container {
 	id = null;
 	health = 100;
 	name = '';
-	// sprite = null;
 	currentAnimation = null;
+	animatedSprite = null;
+	animations = {};
 
 	constructor(x, y, name) {
 		super();
@@ -38,6 +39,12 @@ export class Fighter extends Container {
 			};
 		}
 
+		for (let i = 0; i < 7; i++) {
+			frames[`walkLeft${i + 1}`] = {
+				frame: { x: 32 * (i + 1), y: 0, w: 32, h: 32 },
+			};
+		}
+
 		const atlasData = {
 			frames,
 			meta: {
@@ -45,7 +52,8 @@ export class Fighter extends Container {
 				size: { w: 256, h: 1280 },
 			},
 			animations: {
-				idleLeft: Object.keys(frames),
+				idleLeft: Object.keys(frames).filter(key => key.includes('idleLeft')),
+				walkLeft: Object.keys(frames).filter(key => key.includes('walkLeft')),
 			},
 		};
 
@@ -56,13 +64,34 @@ export class Fighter extends Container {
 		const spritesheet = new Spritesheet(texture, atlasData);
 		await spritesheet.parse();
 
-		const animatedSprite = new AnimatedSprite(spritesheet.animations.idleLeft);
-		animatedSprite.scale.set(5);
+		// this.animations = spritesheet.animations;
 
-		this.addChild(animatedSprite);
+		for (const key in spritesheet.animations) {
+			const anim = new AnimatedSprite(spritesheet.animations[key]);
+			anim.scale.set(5);
+			anim.animationSpeed = 0.13;
+			anim.visible = false;
+			anim.loop = true;
+			this.animations[key] = anim;
+			this.addChild(anim);
+		}
 
-		animatedSprite.play();
-		animatedSprite.animationSpeed = 0.13;
+		this.playAnimation('idleLeft');
+	}
+
+	playAnimation(name) {
+		if (this.currentAnimation === this.animations[name]) return;
+
+		if (this.currentAnimation) {
+			this.currentAnimation.visible = false;
+			this.currentAnimation.stop();
+		}
+
+		if (this.animations[name]) {
+			this.currentAnimation = this.animations[name];
+			this.currentAnimation.visible = true;
+			this.currentAnimation.gotoAndPlay(0);
+		}
 	}
 
 	update() {
