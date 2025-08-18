@@ -40,8 +40,8 @@ export class Game {
 	start() {
 		this.app &&
 			this.app.ticker.add(() => {
+				this.fightManager.update(this.inputManager);
 				this.inputManager.update();
-				this.fightManager.update(this.inputManager.state);
 			});
 	}
 }

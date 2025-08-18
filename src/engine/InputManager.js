@@ -7,6 +7,7 @@ export class InputManager {
 		s: false,
 		d: false,
 	};
+	pressed = {};
 
 	constructor() {
 		window.addEventListener('keydown', e => this.onKey(e, true));
@@ -18,12 +19,27 @@ export class InputManager {
 		if (e.code === 'ArrowRight') this.state.right = pressed;
 		if (e.code === 'ArrowDown') this.state.down = pressed;
 		if (e.code === 'ArrowUp') this.state.up = pressed;
-		if (e.code === 'KeyS') this.state.s = pressed;
-		if (e.code === 'KeyD') this.state.d = pressed;
+		if (e.code === 'KeyS') {
+			if (pressed) {
+				if (!this.state.s) {
+					this.pressed.s = true;
+				}
+			}
+			this.state.s = pressed;
+		}
+
+		if (e.code === 'KeyD') {
+			if (pressed) {
+				if (!this.state.d) {
+					this.pressed.d = true;
+				}
+			}
+			this.state.d = pressed;
+		}
 	}
 
 	update() {
-		// console.table(this.state);
-		//process collected events (combos??) and dispatch them maybe async
+		//drop pressed
+		this.pressed = {};
 	}
 }
