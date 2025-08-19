@@ -38,6 +38,12 @@ export class Fighter extends Container {
 		this.addChild(sprite);
 	}
 
+	parseAnimationSpeed(key) {
+		if (key === 'punchLeft' || key === 'kickLeft') return 0.3;
+		if (key === 'flip' || key === 'backFlip') return 0.2;
+		return 0.15;
+	}
+
 	async load(sprite) {
 		const atlasData = loadAtlasData(sprite);
 
@@ -51,8 +57,7 @@ export class Fighter extends Container {
 		for (const key in spritesheet.animations) {
 			const anim = new AnimatedSprite(spritesheet.animations[key]);
 			anim.scale.set(5);
-			anim.animationSpeed =
-				key === 'punchLeft' || key === 'kickLeft' ? 0.3 : 0.13;
+			anim.animationSpeed = this.parseAnimationSpeed(key);
 			anim.visible = false;
 
 			if (key === 'punchLeft' || key === 'kickLeft') {

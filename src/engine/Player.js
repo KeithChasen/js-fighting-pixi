@@ -3,7 +3,6 @@ import { Fighter } from './Fighter';
 export class Player extends Fighter {
 	isAttack = false;
 	update(input) {
-		// console.log('input.pressed', input.pressed);
 		if (this.isAttack) return; // if attacking do not move
 
 		let moving = false;
@@ -13,7 +12,12 @@ export class Player extends Fighter {
 					(this.isJumping ? this.jumpVelocityX : this.velocityX),
 				this.position.y
 			);
-			this.playAnimation('walkLeft');
+			if (this.isJumping) {
+				this.playAnimation('backFlip');
+			} else {
+				this.playAnimation('walkLeft');
+			}
+
 			moving = true;
 		}
 
@@ -23,7 +27,11 @@ export class Player extends Fighter {
 					(this.isJumping ? this.jumpVelocityX : this.velocityX),
 				this.position.y
 			);
-			this.playAnimation('walkLeft');
+			if (this.isJumping) {
+				this.playAnimation('flip');
+			} else {
+				this.playAnimation('walkLeft');
+			}
 			moving = true;
 		}
 
