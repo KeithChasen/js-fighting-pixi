@@ -14,6 +14,9 @@ export class Fighter extends Container {
 	animatedSprite = null;
 	animations = {};
 
+	velocityY = 0;
+	isJumping = false;
+
 	constructor(x, y, name) {
 		super();
 

@@ -18,23 +18,27 @@ export class InputManager {
 		if (e.code === 'ArrowLeft') this.state.left = pressed;
 		if (e.code === 'ArrowRight') this.state.right = pressed;
 		if (e.code === 'ArrowDown') this.state.down = pressed;
-		if (e.code === 'ArrowUp') this.state.up = pressed;
-		if (e.code === 'KeyS') {
-			if (pressed) {
-				if (!this.state.s) {
-					this.pressed.s = true;
-				}
-			}
-			this.state.s = pressed;
-		}
 
-		if (e.code === 'KeyD') {
+		this.processOneTimePress(e, 'ArrowUp', 'up', pressed); // jump
+		this.processOneTimePress(e, 'KeyS', 's', pressed); // punch
+		this.processOneTimePress(e, 'KeyD', 'd', pressed); // kick
+	}
+
+	/**
+	 *
+	 * @param {*} e : Event
+	 * @param {*} key : KeyS, KeyD
+	 * @param {*} state : s, d
+	 * @param {*} pressed : bool
+	 */
+	processOneTimePress(e, key, state, pressed) {
+		if (e.code === key) {
 			if (pressed) {
-				if (!this.state.d) {
-					this.pressed.d = true;
+				if (!this.state[state]) {
+					this.pressed[state] = true;
 				}
 			}
-			this.state.d = pressed;
+			this.state[state] = pressed;
 		}
 	}
 
