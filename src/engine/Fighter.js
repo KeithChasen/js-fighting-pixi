@@ -17,6 +17,9 @@ export class Fighter extends Container {
 	velocityY = 0;
 	isJumping = false;
 
+	velocityX = 3;
+	jumpVelocityX = 6;
+
 	constructor(x, y, name) {
 		super();
 
