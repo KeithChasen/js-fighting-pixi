@@ -21,9 +21,9 @@ export class Game {
 		this.app.canvas.style.position = 'absolute';
 
 		const player = new Player(100, 400, 'Player');
-		player.load('v');
+		player.load();
 		const enemy = new AIEnemy(window.innerWidth - 200, 400, 'Enemy');
-		enemy.load('r');
+		enemy.load(true);
 
 		this.app.stage.addChild(player);
 		this.app.stage.addChild(enemy);

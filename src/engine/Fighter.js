@@ -5,8 +5,10 @@ import {
 	Spritesheet,
 	Texture,
 	AnimatedSprite,
+	ColorMatrixFilter,
 } from 'pixi.js';
-import { loadAtlasData } from './configs/spriteAnimations';
+
+import { atlases } from './configs/v';
 export class Fighter extends Container {
 	id = null;
 	health = 100;
@@ -39,38 +41,45 @@ export class Fighter extends Container {
 	}
 
 	parseAnimationSpeed(key) {
-		if (key === 'punchLeft' || key === 'kickLeft') return 0.3;
-		if (key === 'flip' || key === 'backFlip') return 0.2;
+		if (key === 'punch' || key === 'kick') return 0.3;
+		if (key === 'frontFlip' || key === 'backFlip') return 0.2;
 		return 0.15;
 	}
 
-	async load(sprite) {
-		const atlasData = loadAtlasData(sprite);
+	async loadAnimation(name) {
+		const atlasData = atlases[name];
 
 		const texture = await Assets.load(atlasData.meta.image);
-
 		texture.source.scaleMode = 'nearest';
 
 		const spritesheet = new Spritesheet(texture, atlasData);
 		await spritesheet.parse();
 
-		for (const key in spritesheet.animations) {
-			const anim = new AnimatedSprite(spritesheet.animations[key]);
+		return spritesheet;
+	}
+
+	async load(enemy) {
+		const names = ['idle', 'walk', 'punch', 'kick', 'frontFlip', 'backFlip'];
+
+		const filter = new ColorMatrixFilter();
+		filter.hue(enemy ? 120 : 0, false);
+
+		for (const name of names) {
+			const sheet = await this.loadAnimation(name);
+			const anim = new AnimatedSprite(sheet.animations[name]);
+
 			anim.scale.set(5);
-			anim.animationSpeed = this.parseAnimationSpeed(key);
+			anim.animationSpeed = this.parseAnimationSpeed(name);
 			anim.visible = false;
+			anim.loop = !(name === 'punch' || name === 'kick');
 
-			if (key === 'punchLeft' || key === 'kickLeft') {
-				anim.loop = false; // do not loop animation if it's a kick or punch
-			} else {
-				anim.loop = true;
-			}
+			anim.filters = [filter];
 
-			this.animations[key] = anim;
+			this.animations[name] = anim;
 			this.addChild(anim);
 		}
 
-		this.playAnimation('idleLeft');
+		this.playAnimation('idle');
 	}
 
 	playAnimation(name) {

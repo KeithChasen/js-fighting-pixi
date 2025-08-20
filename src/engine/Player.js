@@ -15,7 +15,7 @@ export class Player extends Fighter {
 			if (this.isJumping) {
 				this.playAnimation('backFlip');
 			} else {
-				this.playAnimation('walkLeft');
+				this.playAnimation('walk');
 			}
 
 			moving = true;
@@ -28,20 +28,20 @@ export class Player extends Fighter {
 				this.position.y
 			);
 			if (this.isJumping) {
-				this.playAnimation('flip');
+				this.playAnimation('frontFlip');
 			} else {
-				this.playAnimation('walkLeft');
+				this.playAnimation('walk');
 			}
 			moving = true;
 		}
 
 		if (input.pressed.s) {
-			this.doAttack('punchLeft');
+			this.doAttack('punch');
 			return;
 		}
 
 		if (input.pressed.d) {
-			this.doAttack('kickLeft');
+			this.doAttack('kick');
 			return;
 		}
 
@@ -58,7 +58,6 @@ export class Player extends Fighter {
 		this.position.set(this.position.x, this.position.y + this.velocityY);
 
 		// 400 is the initial y value (fix hardcode)
-		//todo: check if we can omit it when not jumping
 		if (this.isJumping && this.position.y >= 400) {
 			this.position.set(this.position.x, 400);
 			this.velocityY = 0;
@@ -67,7 +66,7 @@ export class Player extends Fighter {
 		// jump
 
 		if (!moving) {
-			this.playAnimation('idleLeft');
+			this.playAnimation('idle');
 		}
 	}
 
@@ -77,7 +76,7 @@ export class Player extends Fighter {
 
 		this.currentAnimation.onComplete = () => {
 			this.isAttack = false;
-			this.playAnimation('idleLeft');
+			this.playAnimation('idle');
 		};
 	}
 }
